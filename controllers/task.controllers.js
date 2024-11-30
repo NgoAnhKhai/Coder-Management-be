@@ -7,13 +7,6 @@ const TaskController = {};
 //CREATE A TASK
 TaskController.createTask = async (req, res, next) => {
   try {
-    const { error } = taskValidator.validate(req.body);
-    if (error) {
-      return next(
-        new AppError(400, error.details[0].message, "Create Task Error")
-      );
-    }
-
     const { taskName, description, status, userId } = req.body;
 
     const newTask = await Task.create({
@@ -33,6 +26,17 @@ TaskController.createTask = async (req, res, next) => {
     );
   } catch (err) {
     next(err);
+  }
+};
+
+//Get All Task
+TaskController.GetAllTask = async (req, res, next) => {
+  try {
+    const task = {};
+    const tasks = await Task.find(task);
+    sendResponse(res, 200, true, { data: { task: tasks } }, null, "Task Found");
+  } catch (error) {
+    next(error);
   }
 };
 

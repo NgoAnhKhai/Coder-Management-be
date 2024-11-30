@@ -10,12 +10,7 @@ const userController = {};
 userController.createUser = async (req, res, next) => {
   try {
     const info = req.body;
-    const { error } = userValidator.validate(req.body);
-    if (error) {
-      return next(
-        new AppError(400, error.details[0].message, "Create User Error")
-      );
-    }
+
     const created = await User.create(info);
     sendResponse(
       res,

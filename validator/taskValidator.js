@@ -16,16 +16,15 @@ const taskValidator = Joi.object({
     "any.required": "Description is a required field",
   }),
   status: Joi.string()
-    .valid("Pending", "In Progress", "Completed")
+    .valid("Pending", "Completed")
     .default("Pending")
     .messages({
       "string.base": "Status must be a string",
       "any.only": "Status must be one of: Pending, In Progress, Completed",
     }),
-  userId: Joi.string().required().messages({
-    "string.base": "User ID must be a string",
-    "any.required": "User ID is required",
-  }),
+  userId: Joi.string()
+    .required()
+    .regex(/^[a-z0-9]{24}$/),
 });
 
 module.exports = taskValidator;

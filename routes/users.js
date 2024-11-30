@@ -5,9 +5,11 @@ const {
   updateUserByName,
   getAllTaskById,
 } = require("../controllers/user.controllers");
+const validationMiddleware = require("../middlewares/validation.middleware");
+const userValidation = require("../validator/userValidator");
 const router = express.Router();
 //CREATE
-router.post("/", createUser);
+router.post("/", validationMiddleware(userValidation, "body"), createUser);
 
 //GET ALL USER
 router.get("/", getAllUser);

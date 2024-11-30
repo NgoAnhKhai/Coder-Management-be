@@ -1,16 +1,26 @@
 var express = require("express");
+
+const validationMiddleware = require("../middlewares/validation.middleware");
+const taskValidation = require("../validator/taskValidator");
 const {
-  createTask,
+  GetAllTask,
   getTaskByStatus,
+  getSingleTaskById,
   assignTaskToUser,
   unassignTaskFromUser,
-  getSingleTaskById,
   updateTaskStatus,
   deleteTask,
+  createTask,
 } = require("../controllers/task.controllers");
 const router = express.Router();
 // Create Task
-router.post("/create", createTask);
+router.post(
+  "/create",
+  validationMiddleware(taskValidation, "body"),
+  createTask
+);
+//GetAllTask
+router.get("/", GetAllTask);
 
 //Get Task By Status
 router.get("/status/:status", getTaskByStatus);
