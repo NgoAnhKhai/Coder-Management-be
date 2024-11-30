@@ -6,24 +6,32 @@ const TaskController = {};
 
 //CREATE A TASK
 TaskController.createTask = async (req, res, next) => {
-  const taskInfo = req.body;
-  const { error } = taskValidator.validate(req.body);
-  if (error) {
-    return next(
-      new AppError(400, error.details[0].message, "Create Task Error")
-    );
-  }
   try {
-    const newTask = await Task.create(taskInfo);
+    const { error } = taskValidator.validate(req.body);
+    if (error) {
+      return next(
+        new AppError(400, error.details[0].message, "Create Task Error")
+      );
+    }
+
+    const { taskName, description, status, userId } = req.body;
+
+    const newTask = await Task.create({
+      taskName,
+      description,
+      status,
+      user: userId,
+    });
+
     sendResponse(
       res,
       200,
       true,
       { data: { task: newTask } },
       null,
-      "Create Task Successfull"
+      "Task Created Successfully"
     );
-  } catch (error) {
+  } catch (err) {
     next(err);
   }
 };
@@ -62,7 +70,7 @@ TaskController.getSingleTaskById = async (req, res, next) => {
   const taskId = req.params.id;
   console.log("Task ID:", taskId);
   // Validate ID using Joi
-  const { error } = validateId.validate(id);
+  const { error } = validateId.validate(taskId);
   if (error) {
     return next(new AppError(400, error.details[0].message, "Get Task Error"));
   }

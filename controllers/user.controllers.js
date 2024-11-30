@@ -70,12 +70,11 @@ userController.getAllTaskById = async (req, res, next) => {
   // Validate ID using Joi
   const { error } = validateId.validate(userId);
   if (error) {
-    return next(
-      new AppError(400, error.details[0].message, "Update User Error")
-    );
+    return next(new AppError(400, error.details[0].message, " Error"));
   }
   try {
-    const user = await User.findOne(userId);
+    const user = await User.findOne({ _id: userId });
+
     if (!user) {
       throw new AppError(
         404,

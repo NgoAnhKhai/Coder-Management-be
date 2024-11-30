@@ -1,4 +1,3 @@
-// validators/userValidator.js
 const Joi = require("joi");
 
 const userValidator = Joi.object({
